@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Insurance Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --primary: #2d9cdb;
+      --primary-dark: #2176ae;
+      --bg: #f7fbfc;
+      --white: #fff;
+      --border: #e0e6ed;
+      --success: #27ae60;
+    }
+    body {
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+    }
+    .form-wrapper {
+      max-width: 650px;
+      margin: 48px auto;
+      background: var(--white);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(44, 62, 80, 0.07);
+      padding: 50px 50px 38px 50px;
+      position: relative;
+      overflow: hidden;
+    }
+    .form-wrapper:before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, var(--primary), #56ccf2);
+      border-radius: 50%;
+      opacity: 0.15;
+      z-index: 0;
+    }
+    .form-title {
+      text-align: center;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-bottom: 28px;
+      font-size: 2rem;
+      letter-spacing: 0.03em;
+    }
+    form {
+      position: relative;
+      z-index: 2;
+    }
+    .form-group {
+      margin-bottom: 22px;
+    }
+    label {
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: block;
+      color: #444;
+      font-size: 1.08rem;
+    }
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      font-size: 1.05rem;
+      background: var(--white);
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      outline: none;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      background: #f6fbfe;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+      max-height: 140px;
+    }
+    .form-row {
+      display: flex;
+      gap: 18px;
+    }
+    .form-row > .form-group {
+      flex: 1 1 0;
+      margin-bottom: 0;
+    }
+    .btn-submit {
+      background: linear-gradient(90deg, var(--primary), #56ccf2);
+      color: var(--white);
+      border: none;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-radius: 7px;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.13s;
+      margin-top: 10px;
+    }
+    .btn-submit:hover {
+      background: linear-gradient(90deg, var(--primary-dark), #2d9cdb);
+      transform: translateY(-1px) scale(1.01);
+    }
+    @media (max-width: 800px) {
+      .form-wrapper {
+        max-width: 96vw;
+        padding: 24px 4vw 14px 4vw;
+      }
+      .form-title { font-size: 1.25rem; }
+      .form-row { flex-direction: column; gap: 0; }
+    }
+
+    /* Overlay success message */
+    .success-overlay {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(47, 64, 80, 0.18);
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.2s;
+    }
+    .success-overlay.show {
+      display: flex;
+      animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .success-box {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 6px 32px rgba(44, 62, 80, 0.18);
+      padding: 48px 38px 40px 38px;
+      text-align: center;
+      min-width: 320px;
+      max-width: 90vw;
+      position: relative;
+    }
+    .success-check {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 16px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .success-check svg {
+      width: 60px;
+      height: 60px;
+      display: block;
+    }
+    .success-message-text {
+      font-size: 1.28rem;
+      color: var(--success);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-wrapper">
+    <div class="form-title">Medical Insurance Application</div>
+    <form id="insuranceForm" autocomplete="off">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text" required placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" required placeholder="Enter your address"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input id="age" type="number" min="0" max="120" required placeholder="Age">
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" required>
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="insuranceNumber">Insurance Number</label>
+        <input id="insuranceNumber" type="text" required placeholder="e.g. AB1234567">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input id="phone" type="tel" required placeholder="e.g. 0812345678">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input id="email" type="email" required placeholder="your@email.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="conditions">Pre-existing Conditions</label>
+        <textarea id="conditions" placeholder="If any, specify"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="insuranceType">Insurance Type</label>
+        <select id="insuranceType" required>
+          <option value="">Select</option>
+          <option>Standard</option>
+          <option>Premium</option>
+          <option>Family</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-submit">Submit Application</button>
+    </form>
+  </div>
+
+  <!-- Success Overlay -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-box">
+      <div class="success-check">
+        <!-- Green check circle SVG -->
+        <svg viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="30" r="30" fill="#eafaf1"/>
+          <circle cx="30" cy="30" r="27" fill="#fff"/>
+          <circle cx="30" cy="30" r="24" fill="#eafaf1"/>
+          <path d="M18 32.5L27 41L43 23" stroke="#27ae60" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-message-text">Thank you! Your application has been submitted.</div>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('successOverlay');
+    document.getElementById('insuranceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      overlay.classList.add('show');
+      this.reset();
+      setTimeout(() => {
+        overlay.classList.remove('show');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
