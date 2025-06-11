@@ -54,13 +54,14 @@
       border: 1.5px solid var(--border);
       border-radius: 7px;
       font-size: 1.07rem;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
       box-sizing: border-box;
       outline: none;
       background: var(--white);
     }
     .login-form input:focus {
       border-color: var(--primary);
+      box-shadow: 0 0 2px var(--primary);
     }
     .login-btn {
       width: 100%;
@@ -126,32 +127,65 @@
     .form-group { margin-bottom: 22px; }
     label { font-weight: 500; margin-bottom: 6px; display: block; color: #444; font-size: 1.08rem; }
     input, select, textarea {
-      width: 100%; padding: 13px 14px; border: 1.5px solid var(--border);
-      border-radius: 7px; font-size: 1.05rem; background: var(--white);
-      transition: border-color 0.2s; box-sizing: border-box; outline: none;
+      width: 100%; padding: 15px 16px; /* Bigger padding for better look */
+      border: 1.5px solid var(--border);
+      border-radius: 8px; /* More rounded */
+      font-size: 1.13rem; /* Larger text */
+      background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      outline: none;
     }
     input:focus, select:focus, textarea:focus {
-      border-color: var(--primary); background: #f6fbfe;
+      border-color: var(--primary);
+      background: #f6fbfe;
+      box-shadow: 0 0 3px var(--primary);
     }
-    textarea { resize: vertical; min-height: 60px; max-height: 140px; }
-    .form-row { display: flex; gap: 18px; }
-    .form-row > .form-group { flex: 1 1 0; margin-bottom: 0; }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+      max-height: 140px;
+      font-size: 1.12rem;
+    }
+    .form-row {
+      display: flex;
+      gap: 18px;
+    }
+    .form-row > .form-group {
+      flex: 1 1 0;
+      margin-bottom: 0;
+    }
     .btn-submit {
       background: linear-gradient(90deg, var(--primary), #56ccf2);
-      color: var(--white); border: none; padding: 15px 0; font-size: 1.15rem;
-      font-weight: 600; border-radius: 7px; width: 100%;
-      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07); cursor: pointer;
-      transition: background 0.2s, transform 0.13s; margin-top: 10px;
+      color: var(--white);
+      border: none;
+      padding: 16px 0;
+      font-size: 1.18rem;
+      font-weight: 600;
+      border-radius: 8px;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.13s;
+      margin-top: 10px;
     }
     .btn-submit:hover {
       background: linear-gradient(90deg, var(--primary-dark), #2d9cdb);
       transform: translateY(-1px) scale(1.01);
+    }
+    /* Highlight first text input */
+    input[type="text"]:first-of-type {
+      font-weight: 600;
+      font-size: 1.18rem;
+      letter-spacing: 0.02em;
+      background: #fafdff;
     }
     @media (max-width: 800px) {
       .form-wrapper { max-width: 96vw; padding: 24px 4vw 14px 4vw; }
       .form-title { font-size: 1.25rem; }
       .form-row { flex-direction: column; gap: 0; }
       .center-box { margin: 30px auto; }
+      input, select, textarea { font-size: 1rem; padding: 12px 10px; }
     }
     /* Modal Overlay */
     .modal-overlay {
@@ -254,10 +288,6 @@
           <label for="fullName">Full Name</label>
           <input id="fullName" type="text" required placeholder="Enter your full name">
         </div>
-        <div class="form-group">
-          <label for="address">Address</label>
-          <textarea id="address" required placeholder="Enter your address"></textarea>
-        </div>
         <div class="form-row">
           <div class="form-group">
             <label for="age">Age</label>
@@ -288,8 +318,12 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="conditions">Pre-existing Conditions</label>
-          <textarea id="conditions" placeholder="If any, specify"></textarea>
+          <label for="medication">Medication</label>
+          <textarea id="medication" placeholder="List any medications..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="procedure">Procedure Description</label>
+          <textarea id="procedure" placeholder="Describe any procedures..."></textarea>
         </div>
         <div class="form-group">
           <label for="insuranceType">Insurance Type</label>
@@ -339,6 +373,10 @@
       if(username === correctUsername && password === correctPassword){
         loginBox.style.display = "none";
         appContent.style.display = "block";
+        // Autofocus to the first input in the insurance form
+        setTimeout(() => {
+          document.getElementById('fullName').focus();
+        }, 150);
       } else {
         loginError.style.display = "block";
         setTimeout(()=>{ loginError.style.display = "none"; }, 1800);
@@ -354,13 +392,20 @@
       refNoSpan.textContent = generateRefNo();
       modalOverlay.classList.add('show');
       this.reset();
+      document.getElementById('fullName').focus();
     });
     modalCloseBtn.addEventListener('click', () => {
       modalOverlay.classList.remove('show');
+      setTimeout(() => {
+        document.getElementById('fullName').focus();
+      }, 150);
     });
     window.addEventListener('keydown', (e) => {
       if (e.key === "Escape" && modalOverlay.classList.contains('show')) {
         modalOverlay.classList.remove('show');
+        setTimeout(() => {
+          document.getElementById('fullName').focus();
+        }, 150);
       }
     });
     function generateRefNo() {
