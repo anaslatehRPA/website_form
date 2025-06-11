@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Medical Insurance Application</title>
+  <title>Login | Medical Insurance Application</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
@@ -12,6 +12,7 @@
       --white: #fff;
       --border: #e0e6ed;
       --success: #27ae60;
+      --danger: #e74c3c;
     }
     body {
       font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
@@ -19,6 +20,79 @@
       margin: 0;
       padding: 0;
     }
+    /* Login Box */
+    .center-box {
+      max-width: 400px;
+      margin: 80px auto;
+      background: var(--white);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(44, 62, 80, 0.10);
+      padding: 40px 36px 32px 36px;
+      position: relative;
+      text-align: center;
+    }
+    .login-title {
+      color: var(--primary-dark);
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: 0.02em;
+    }
+    .login-form .form-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+    .login-form label {
+      font-weight: 500;
+      margin-bottom: 7px;
+      color: #444;
+      display: block;
+    }
+    .login-form input {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      font-size: 1.07rem;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      outline: none;
+      background: var(--white);
+    }
+    .login-form input:focus {
+      border-color: var(--primary);
+    }
+    .login-btn {
+      width: 100%;
+      background: linear-gradient(90deg, var(--primary), #56ccf2);
+      color: #fff;
+      border: none;
+      padding: 13px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 7px;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+    .login-btn:hover {
+      background: linear-gradient(90deg, var(--primary-dark), #2d9cdb);
+    }
+    .error-message {
+      color: var(--danger);
+      background: #fcf0f1;
+      border: 1px solid #f3c4c7;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      display: none;
+    }
+    /* Hide main app before login */
+    #app-content { display: none; }
+
+    /* Insurance Form */
     .form-wrapper {
       max-width: 650px;
       margin: 48px auto;
@@ -49,77 +123,35 @@
       font-size: 2rem;
       letter-spacing: 0.03em;
     }
-    form {
-      position: relative;
-      z-index: 2;
+    .form-group { margin-bottom: 22px; }
+    label { font-weight: 500; margin-bottom: 6px; display: block; color: #444; font-size: 1.08rem; }
+    input, select, textarea {
+      width: 100%; padding: 13px 14px; border: 1.5px solid var(--border);
+      border-radius: 7px; font-size: 1.05rem; background: var(--white);
+      transition: border-color 0.2s; box-sizing: border-box; outline: none;
     }
-    .form-group {
-      margin-bottom: 22px;
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary); background: #f6fbfe;
     }
-    label {
-      font-weight: 500;
-      margin-bottom: 6px;
-      display: block;
-      color: #444;
-      font-size: 1.08rem;
-    }
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 7px;
-      font-size: 1.05rem;
-      background: var(--white);
-      transition: border-color 0.2s;
-      box-sizing: border-box;
-      outline: none;
-    }
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      background: #f6fbfe;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 60px;
-      max-height: 140px;
-    }
-    .form-row {
-      display: flex;
-      gap: 18px;
-    }
-    .form-row > .form-group {
-      flex: 1 1 0;
-      margin-bottom: 0;
-    }
+    textarea { resize: vertical; min-height: 60px; max-height: 140px; }
+    .form-row { display: flex; gap: 18px; }
+    .form-row > .form-group { flex: 1 1 0; margin-bottom: 0; }
     .btn-submit {
       background: linear-gradient(90deg, var(--primary), #56ccf2);
-      color: var(--white);
-      border: none;
-      padding: 15px 0;
-      font-size: 1.15rem;
-      font-weight: 600;
-      border-radius: 7px;
-      width: 100%;
-      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
-      cursor: pointer;
-      transition: background 0.2s, transform 0.13s;
-      margin-top: 10px;
+      color: var(--white); border: none; padding: 15px 0; font-size: 1.15rem;
+      font-weight: 600; border-radius: 7px; width: 100%;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07); cursor: pointer;
+      transition: background 0.2s, transform 0.13s; margin-top: 10px;
     }
     .btn-submit:hover {
       background: linear-gradient(90deg, var(--primary-dark), #2d9cdb);
       transform: translateY(-1px) scale(1.01);
     }
     @media (max-width: 800px) {
-      .form-wrapper {
-        max-width: 96vw;
-        padding: 24px 4vw 14px 4vw;
-      }
+      .form-wrapper { max-width: 96vw; padding: 24px 4vw 14px 4vw; }
       .form-title { font-size: 1.25rem; }
       .form-row { flex-direction: column; gap: 0; }
+      .center-box { margin: 30px auto; }
     }
     /* Modal Overlay */
     .modal-overlay {
@@ -196,92 +228,127 @@
   </style>
 </head>
 <body>
-  <div class="form-wrapper">
-    <div class="form-title">Medical Insurance Application</div>
-    <form id="insuranceForm" autocomplete="off">
+  <!-- Login Box -->
+  <div class="center-box" id="login-box">
+    <div class="login-title">Login</div>
+    <div class="error-message" id="login-error">Username or Password incorrect!</div>
+    <form class="login-form" id="loginForm" autocomplete="off">
       <div class="form-group">
-        <label for="fullName">Full Name</label>
-        <input id="fullName" type="text" required placeholder="Enter your full name">
-      </div>
-      <div class="form-group">
-        <label for="address">Address</label>
-        <textarea id="address" required placeholder="Enter your address"></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="age">Age</label>
-          <input id="age" type="number" min="0" max="120" required placeholder="Age">
-        </div>
-        <div class="form-group">
-          <label for="gender">Gender</label>
-          <select id="gender" required>
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </div>
+        <label for="username">Username</label>
+        <input id="username" type="text" required autocomplete="username">
       </div>
       <div class="form-group">
-        <label for="insuranceNumber">Insurance Number</label>
-        <input id="insuranceNumber" type="text" required placeholder="e.g. AB1234567">
+        <label for="password">Password</label>
+        <input id="password" type="password" required autocomplete="current-password">
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input id="phone" type="tel" required placeholder="e.g. 0812345678">
-        </div>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input id="email" type="email" required placeholder="your@email.com">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="conditions">Pre-existing Conditions</label>
-        <textarea id="conditions" placeholder="If any, specify"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="insuranceType">Insurance Type</label>
-        <select id="insuranceType" required>
-          <option value="">Select</option>
-          <option>Standard</option>
-          <option>Premium</option>
-          <option>Family</option>
-        </select>
-      </div>
-      <button type="submit" class="btn-submit">Submit Application</button>
+      <button type="submit" class="login-btn">Login</button>
     </form>
   </div>
 
-  <!-- Modal Success Box -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-box">
-      <div class="modal-check">
-        <svg viewBox="0 0 60 60" fill="none">
-          <circle cx="30" cy="30" r="30" fill="#eafaf1"/>
-          <circle cx="30" cy="30" r="27" fill="#fff"/>
-          <circle cx="30" cy="30" r="24" fill="#eafaf1"/>
-          <path d="M18 32.5L27 41L43 23" stroke="#27ae60" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <!-- Main App Content (hidden before login) -->
+  <div id="app-content">
+    <div class="form-wrapper">
+      <div class="form-title">Medical Insurance Application</div>
+      <form id="insuranceForm" autocomplete="off">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input id="fullName" type="text" required placeholder="Enter your full name">
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea id="address" required placeholder="Enter your address"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input id="age" type="number" min="0" max="120" required placeholder="Age">
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" required>
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="insuranceNumber">Insurance Number</label>
+          <input id="insuranceNumber" type="text" required placeholder="e.g. AB1234567">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input id="phone" type="tel" required placeholder="e.g. 0812345678">
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input id="email" type="email" required placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="conditions">Pre-existing Conditions</label>
+          <textarea id="conditions" placeholder="If any, specify"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="insuranceType">Insurance Type</label>
+          <select id="insuranceType" required>
+            <option value="">Select</option>
+            <option>Standard</option>
+            <option>Premium</option>
+            <option>Family</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-submit">Submit Application</button>
+      </form>
+    </div>
+    <!-- Modal Success Box -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-box">
+        <div class="modal-check">
+          <svg viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="30" fill="#eafaf1"/>
+            <circle cx="30" cy="30" r="27" fill="#fff"/>
+            <circle cx="30" cy="30" r="24" fill="#eafaf1"/>
+            <path d="M18 32.5L27 41L43 23" stroke="#27ae60" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="modal-message-text">Thank you! Your application has been submitted.</div>
+        <div class="modal-ref">Reference No: <span id="refNo"></span></div>
+        <button class="modal-close-btn" id="modalCloseBtn">ปิด</button>
       </div>
-      <div class="modal-message-text">Thank you! Your application has been submitted.</div>
-      <div class="modal-ref">Reference No: <span id="refNo"></span></div>
-      <button class="modal-close-btn" id="modalCloseBtn">ปิด</button>
     </div>
   </div>
 
   <script>
+    // Login Logic
+    const loginBox = document.getElementById('login-box');
+    const appContent = document.getElementById('app-content');
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('login-error');
+
+    // ตั้งค่า username/password ที่ต้องการ (ตัวอย่าง: admin/1234)
+    const correctUsername = "admin";
+    const correctPassword = "1234";
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      if(username === correctUsername && password === correctPassword){
+        loginBox.style.display = "none";
+        appContent.style.display = "block";
+      } else {
+        loginError.style.display = "block";
+        setTimeout(()=>{ loginError.style.display = "none"; }, 1800);
+      }
+    });
+
+    // Insurance Form Logic
     const modalOverlay = document.getElementById('modalOverlay');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
     const refNoSpan = document.getElementById('refNo');
-
-    function generateRefNo() {
-      // สุ่มตัวเลข 10 หลัก
-      let result = '';
-      for(let i=0;i<10;i++) result += Math.floor(Math.random()*10);
-      return result;
-    }
-
     document.getElementById('insuranceForm').addEventListener('submit', function(e) {
       e.preventDefault();
       refNoSpan.textContent = generateRefNo();
@@ -291,12 +358,16 @@
     modalCloseBtn.addEventListener('click', () => {
       modalOverlay.classList.remove('show');
     });
-    // ปิดด้วยปุ่ม Esc
     window.addEventListener('keydown', (e) => {
       if (e.key === "Escape" && modalOverlay.classList.contains('show')) {
         modalOverlay.classList.remove('show');
       }
     });
+    function generateRefNo() {
+      let result = '';
+      for(let i=0;i<10;i++) result += Math.floor(Math.random()*10);
+      return result;
+    }
   </script>
 </body>
 </html>
