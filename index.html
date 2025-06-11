@@ -121,9 +121,8 @@
       .form-title { font-size: 1.25rem; }
       .form-row { flex-direction: column; gap: 0; }
     }
-
-    /* Overlay success message */
-    .success-overlay {
+    /* Modal Overlay */
+    .modal-overlay {
       display: none;
       position: fixed;
       z-index: 9999;
@@ -133,7 +132,7 @@
       align-items: center;
       transition: opacity 0.2s;
     }
-    .success-overlay.show {
+    .modal-overlay.show {
       display: flex;
       animation: fadeIn 0.2s;
     }
@@ -141,17 +140,17 @@
       from { opacity: 0; }
       to   { opacity: 1; }
     }
-    .success-box {
+    .modal-box {
       background: #fff;
       border-radius: 14px;
       box-shadow: 0 6px 32px rgba(44, 62, 80, 0.18);
-      padding: 48px 38px 40px 38px;
+      padding: 44px 36px 32px 36px;
       text-align: center;
       min-width: 320px;
       max-width: 90vw;
       position: relative;
     }
-    .success-check {
+    .modal-check {
       width: 60px;
       height: 60px;
       margin: 0 auto 16px auto;
@@ -159,17 +158,40 @@
       align-items: center;
       justify-content: center;
     }
-    .success-check svg {
+    .modal-check svg {
       width: 60px;
       height: 60px;
       display: block;
     }
-    .success-message-text {
+    .modal-message-text {
       font-size: 1.28rem;
       color: var(--success);
       font-weight: 600;
       letter-spacing: 0.01em;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    .modal-ref {
+      font-size: 1.09rem;
+      color: #555;
+      margin-bottom: 24px;
+      font-family: 'Roboto Mono', monospace, 'Segoe UI', Arial;
+      letter-spacing: 0.03em;
+    }
+    .modal-close-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      outline: none;
+      border-radius: 7px;
+      font-size: 1.08rem;
+      padding: 10px 34px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      transition: background 0.2s;
+    }
+    .modal-close-btn:hover {
+      background: var(--primary-dark);
     }
   </style>
 </head>
@@ -231,11 +253,10 @@
     </form>
   </div>
 
-  <!-- Success Overlay -->
-  <div class="success-overlay" id="successOverlay">
-    <div class="success-box">
-      <div class="success-check">
-        <!-- Green check circle SVG -->
+  <!-- Modal Success Box -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-check">
         <svg viewBox="0 0 60 60" fill="none">
           <circle cx="30" cy="30" r="30" fill="#eafaf1"/>
           <circle cx="30" cy="30" r="27" fill="#fff"/>
@@ -243,19 +264,38 @@
           <path d="M18 32.5L27 41L43 23" stroke="#27ae60" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <div class="success-message-text">Thank you! Your application has been submitted.</div>
+      <div class="modal-message-text">Thank you! Your application has been submitted.</div>
+      <div class="modal-ref">Reference No: <span id="refNo"></span></div>
+      <button class="modal-close-btn" id="modalCloseBtn">ปิด</button>
     </div>
   </div>
 
   <script>
-    const overlay = document.getElementById('successOverlay');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const refNoSpan = document.getElementById('refNo');
+
+    function generateRefNo() {
+      // สุ่มตัวเลข 10 หลัก
+      let result = '';
+      for(let i=0;i<10;i++) result += Math.floor(Math.random()*10);
+      return result;
+    }
+
     document.getElementById('insuranceForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      overlay.classList.add('show');
+      refNoSpan.textContent = generateRefNo();
+      modalOverlay.classList.add('show');
       this.reset();
-      setTimeout(() => {
-        overlay.classList.remove('show');
-      }, 1000);
+    });
+    modalCloseBtn.addEventListener('click', () => {
+      modalOverlay.classList.remove('show');
+    });
+    // ปิดด้วยปุ่ม Esc
+    window.addEventListener('keydown', (e) => {
+      if (e.key === "Escape" && modalOverlay.classList.contains('show')) {
+        modalOverlay.classList.remove('show');
+      }
     });
   </script>
 </body>
