@@ -187,77 +187,45 @@
       .center-box { margin: 30px auto; }
       input, select, textarea { font-size: 1rem; padding: 12px 10px; }
     }
-    /* Modal Overlay */
-    .modal-overlay {
+    /* Success Box (RPA Friendly) */
+    #success-box {
       display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0; top: 0; right: 0; bottom: 0;
-      background: rgba(47, 64, 80, 0.18);
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.2s;
-    }
-    .modal-overlay.show {
-      display: flex;
-      animation: fadeIn 0.2s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    .modal-box {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 6px 32px rgba(44, 62, 80, 0.18);
-      padding: 44px 36px 32px 36px;
+      border: 2px solid #27ae60;
+      background: #eafaf1;
+      padding: 24px 18px;
+      border-radius: 10px;
+      margin-bottom: 18px;
       text-align: center;
-      min-width: 320px;
-      max-width: 90vw;
-      position: relative;
+      font-size: 1.1em;
     }
-    .modal-check {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 16px auto;
+    #success-box .success-title {
+      font-size: 1.25em;
+      color: #27ae60;
+      font-weight: bold;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
     }
-    .modal-check svg {
-      width: 60px;
-      height: 60px;
-      display: block;
+    #success-box .success-ref {
+      color: #2176ae;
+      font-size: 1.1em;
+      margin-bottom: 10px;
     }
-    .modal-message-text {
-      font-size: 1.28rem;
-      color: var(--success);
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      margin-bottom: 16px;
-    }
-    .modal-ref {
-      font-size: 1.09rem;
-      color: #555;
-      margin-bottom: 24px;
-      font-family: 'Roboto Mono', monospace, 'Segoe UI', Arial;
-      letter-spacing: 0.03em;
-    }
-    .modal-close-btn {
-      background: var(--primary);
-      color: #fff;
+    #success-box .success-close-btn {
+      margin-top: 10px;
+      padding: 6px 24px;
       border: none;
-      outline: none;
-      border-radius: 7px;
-      font-size: 1.08rem;
-      padding: 10px 34px;
+      background: #2d9cdb;
+      color: #fff;
+      border-radius: 5px;
+      font-size: 1em;
       cursor: pointer;
-      font-weight: 500;
-      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
-      transition: background 0.2s;
+      transition: background 0.18s;
     }
-    .modal-close-btn:hover {
-      background: var(--primary-dark);
+    #success-box .success-close-btn:hover {
+      background: #2176ae;
     }
   </style>
 </head>
@@ -283,6 +251,17 @@
   <div id="app-content">
     <div class="form-wrapper">
       <div class="form-title">Medical Insurance Application</div>
+      <!-- Success Message Box (RPA Friendly) -->
+      <div id="success-box">
+        <div class="success-title">
+          <span style="font-size:1.5em;">✔</span>
+          Thank you! Your application has been submitted.
+        </div>
+        <div class="success-ref">
+          Reference No: <span id="refNo"></span>
+        </div>
+        <button type="button" class="success-close-btn" id="success-close">Close</button>
+      </div>
       <form id="insuranceForm" autocomplete="off">
         <div class="form-group">
           <label for="fullName">Full Name</label>
@@ -337,22 +316,6 @@
         <button type="submit" class="btn-submit">Submit Application</button>
       </form>
     </div>
-    <!-- Modal Success Box -->
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="modal-box">
-        <div class="modal-check">
-          <svg viewBox="0 0 60 60" fill="none">
-            <circle cx="30" cy="30" r="30" fill="#eafaf1"/>
-            <circle cx="30" cy="30" r="27" fill="#fff"/>
-            <circle cx="30" cy="30" r="24" fill="#eafaf1"/>
-            <path d="M18 32.5L27 41L43 23" stroke="#27ae60" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="modal-message-text">Thank you! Your application has been submitted.</div>
-        <div class="modal-ref">Reference No: <span id="refNo"></span></div>
-        <button class="modal-close-btn" id="modalCloseBtn">ปิด</button>
-      </div>
-    </div>
   </div>
 
   <script>
@@ -373,7 +336,6 @@
       if(username === correctUsername && password === correctPassword){
         loginBox.style.display = "none";
         appContent.style.display = "block";
-        // Autofocus to the first input in the insurance form
         setTimeout(() => {
           document.getElementById('fullName').focus();
         }, 150);
@@ -384,29 +346,19 @@
     });
 
     // Insurance Form Logic
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
     const refNoSpan = document.getElementById('refNo');
+    const successBox = document.getElementById('success-box');
+    const closeSuccess = document.getElementById('success-close');
     document.getElementById('insuranceForm').addEventListener('submit', function(e) {
       e.preventDefault();
       refNoSpan.textContent = generateRefNo();
-      modalOverlay.classList.add('show');
+      successBox.style.display = "block";
       this.reset();
       document.getElementById('fullName').focus();
     });
-    modalCloseBtn.addEventListener('click', () => {
-      modalOverlay.classList.remove('show');
-      setTimeout(() => {
-        document.getElementById('fullName').focus();
-      }, 150);
-    });
-    window.addEventListener('keydown', (e) => {
-      if (e.key === "Escape" && modalOverlay.classList.contains('show')) {
-        modalOverlay.classList.remove('show');
-        setTimeout(() => {
-          document.getElementById('fullName').focus();
-        }, 150);
-      }
+    closeSuccess.addEventListener('click', function() {
+      successBox.style.display = "none";
+      document.getElementById('fullName').focus();
     });
     function generateRefNo() {
       let result = '';
