@@ -127,10 +127,10 @@
     .form-group { margin-bottom: 22px; }
     label { font-weight: 500; margin-bottom: 6px; display: block; color: #444; font-size: 1.08rem; }
     input, select, textarea {
-      width: 100%; padding: 15px 16px; /* Bigger padding for better look */
+      width: 100%; padding: 15px 16px;
       border: 1.5px solid var(--border);
-      border-radius: 8px; /* More rounded */
-      font-size: 1.13rem; /* Larger text */
+      border-radius: 8px;
+      font-size: 1.13rem;
       background: var(--white);
       transition: border-color 0.2s, box-shadow 0.2s;
       box-sizing: border-box;
@@ -173,7 +173,6 @@
       background: linear-gradient(90deg, var(--primary-dark), #2d9cdb);
       transform: translateY(-1px) scale(1.01);
     }
-    /* Highlight first text input */
     input[type="text"]:first-of-type {
       font-weight: 600;
       font-size: 1.18rem;
@@ -211,21 +210,7 @@
     #success-box .success-ref {
       color: #2176ae;
       font-size: 1.1em;
-      margin-bottom: 10px;
-    }
-    #success-box .success-close-btn {
-      margin-top: 10px;
-      padding: 6px 24px;
-      border: none;
-      background: #2d9cdb;
-      color: #fff;
-      border-radius: 5px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background 0.18s;
-    }
-    #success-box .success-close-btn:hover {
-      background: #2176ae;
+      margin-bottom: 2px;
     }
   </style>
 </head>
@@ -260,7 +245,6 @@
         <div class="success-ref">
           Reference No: <span id="refNo"></span>
         </div>
-        <button type="button" class="success-close-btn" id="success-close">Close</button>
       </div>
       <form id="insuranceForm" autocomplete="off">
         <div class="form-group">
@@ -348,16 +332,11 @@
     // Insurance Form Logic
     const refNoSpan = document.getElementById('refNo');
     const successBox = document.getElementById('success-box');
-    const closeSuccess = document.getElementById('success-close');
     document.getElementById('insuranceForm').addEventListener('submit', function(e) {
       e.preventDefault();
       refNoSpan.textContent = generateRefNo();
       successBox.style.display = "block";
       this.reset();
-      document.getElementById('fullName').focus();
-    });
-    closeSuccess.addEventListener('click', function() {
-      successBox.style.display = "none";
       document.getElementById('fullName').focus();
     });
     function generateRefNo() {
