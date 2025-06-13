@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login | Medical Insurance Application</title>
+  <title>Medical Insurance Claim Application</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
@@ -90,10 +90,8 @@
       margin-bottom: 15px;
       display: none;
     }
-    /* Hide main app before login */
     #app-content { display: none; }
 
-    /* Insurance Form */
     .form-wrapper {
       max-width: 650px;
       margin: 48px auto;
@@ -197,7 +195,7 @@
       text-align: center;
       font-size: 1.1em;
     }
-    #success-box .success-title {
+    #success-message {
       font-size: 1.25em;
       color: #27ae60;
       font-weight: bold;
@@ -207,10 +205,18 @@
       justify-content: center;
       gap: 8px;
     }
-    #success-box .success-ref {
+    #thankyou-message {
+      display: inline;
+    }
+    #refNo-label {
       color: #2176ae;
       font-size: 1.1em;
       margin-bottom: 2px;
+    }
+    #refNo {
+      font-weight: bold;
+      color: #2176ae;
+      margin-left: 4px;
     }
   </style>
 </head>
@@ -235,14 +241,14 @@
   <!-- Main App Content (hidden before login) -->
   <div id="app-content">
     <div class="form-wrapper">
-      <div class="form-title">Medical Insurance Application</div>
-      <!-- Success Message Box (RPA Friendly) -->
+      <div class="form-title">Medical Insurance Claim </div>
+      <!-- Success Message Box (RPA Friendly, with IDs for automation) -->
       <div id="success-box">
-        <div class="success-title">
+        <div class="success-title" id="success-message">
           <span style="font-size:1.5em;">✔</span>
-          Thank you! Your application has been submitted.
+          <span id="thankyou-message">Thank you! Your application has been submitted.</span>
         </div>
-        <div class="success-ref">
+        <div class="success-ref" id="refNo-label">
           Reference No: <span id="refNo"></span>
         </div>
       </div>
@@ -308,8 +314,6 @@
     const appContent = document.getElementById('app-content');
     const loginForm = document.getElementById('loginForm');
     const loginError = document.getElementById('login-error');
-
-    // ตั้งค่า username/password ที่ต้องการ (ตัวอย่าง: admin/1234)
     const correctUsername = "admin";
     const correctPassword = "1234";
 
@@ -334,7 +338,7 @@
     const successBox = document.getElementById('success-box');
     document.getElementById('insuranceForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      refNoSpan.textContent = generateRefNo();
+      refNoSpan.textContent = " " + generateRefNo();
       successBox.style.display = "block";
       this.reset();
       document.getElementById('fullName').focus();
